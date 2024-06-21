@@ -13,6 +13,7 @@ public class BanksampahApplication {
 		System.out.println("Halo Rafa");
 		System.out.println("coba cobba");
 		System.out.println("Testing");
+		System.out.println("ll");
 	}
 
 }
