@@ -14,6 +14,9 @@ public class BanksampahApplication {
 		System.out.println("coba cobba");
 		System.out.println("Testing");
 		System.out.println("ll");
+		System.out.println("Haha");
+		System.out.println("rafael daendels");
+		System.out.println("daendels animalia");
 	}
 
 }
