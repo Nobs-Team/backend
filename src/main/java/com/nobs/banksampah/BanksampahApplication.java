@@ -11,6 +11,7 @@ public class BanksampahApplication {
 		System.out.println("Hello Lila");
 		System.out.println("Halo Akbar");
 		System.out.println("Halo Rafa");
+		System.out.println("coba cobba");
 	}
 
 }
