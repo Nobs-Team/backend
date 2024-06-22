@@ -1,34 +1,35 @@
 package com.nobs.banksampah.controller;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.nobs.banksampah.model.Admin;
-import com.nobs.banksampah.service.AdminService;
+import com.nobs.banksampah.model.User;
+import com.nobs.banksampah.repository.UserRepository;
+
+import lombok.RequiredArgsConstructor;
 
 @RestController
-@RequestMapping("/admin")
+@RequestMapping("/api/admin")
+@RequiredArgsConstructor
 public class AdminController {
 
-    @Autowired
-    private AdminService adminService;
+    private final UserRepository userRepository;
 
-    // Login
-    @PostMapping("/login")
-    public @ResponseBody String login(@RequestBody Admin admin) {
-        String username = admin.getUsername();
-        String password = admin.getPassword();
+    @GetMapping
+    public ResponseEntity<String> welcomeAdmin() {
+        // Mendapatkan Authentication object dari SecurityContextHolder
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        String username = authentication.getName();
 
-        return adminService.loginAdmin(username, password);
-    }
+        // Mengambil user dari repository berdasarkan username
+        User user = userRepository.findByUsername(username)
+                .orElseThrow(() -> new RuntimeException("User tidak ditemukan"));
 
-    // Super admin
-    @PostMapping("/addAdmin")
-    public @ResponseBody String addAdmin(@RequestBody Admin admin) {
-        return adminService.addAdmin(admin);
+        // Mengembalikan response dengan nama user
+        return ResponseEntity.ok("Selamat datang, " + user.getNama());
     }
 }
