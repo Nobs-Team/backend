@@ -1,6 +1,6 @@
 package com.nobs.banksampah.model;
 
-public class AdminModel {
+public class Admin {
 
     private String username;
     private String password;

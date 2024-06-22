@@ -7,35 +7,28 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import com.nobs.banksampah.model.AdminModel;
-import com.nobs.banksampah.repository.AdminRepository;
+import com.nobs.banksampah.model.Admin;
+import com.nobs.banksampah.service.AdminService;
 
 @Controller
 @RequestMapping("/admin")
 public class AdminController {
 
     @Autowired
-    private AdminRepository adminRepository;
+    private AdminService adminService;
 
     // Login
     @PostMapping("/login")
-    public @ResponseBody String login(@RequestBody AdminModel admin) {
+    public @ResponseBody String login(@RequestBody Admin admin) {
         String username = admin.getUsername();
         String password = admin.getPassword();
 
-        AdminModel adminMongo = adminRepository.findByUsername(username);
-
-        if (adminMongo != null && adminMongo.getPassword().equals(password)) {
-            return "Berhasil login admin";
-        } else {
-            return "Login gagal";
-        }
+        return adminService.loginAdmin(username, password);
     }
 
     // Super admin
     @PostMapping("/addAdmin")
-    public @ResponseBody boolean addAdmin(@RequestBody AdminModel admin) {
-        adminRepository.insert(admin);
-        return true;
+    public @ResponseBody String addAdmin(@RequestBody Admin admin) {
+        return adminService.addAdmin(admin);
     }
 }

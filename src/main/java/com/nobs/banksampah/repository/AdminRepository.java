@@ -2,9 +2,9 @@ package com.nobs.banksampah.repository;
 
 import org.springframework.data.mongodb.repository.MongoRepository;
 
-import com.nobs.banksampah.model.AdminModel;
+import com.nobs.banksampah.model.Admin;
 
-public interface AdminRepository extends MongoRepository<AdminModel, String> {
+public interface AdminRepository extends MongoRepository<Admin, String> {
 
-    AdminModel findByUsername(String username);
+    Admin findByUsername(String username);
 }
