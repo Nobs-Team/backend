@@ -30,6 +30,6 @@ public class UserController {
                 .orElseThrow(() -> new RuntimeException("User tidak ditemukan"));
 
         // Mengembalikan response dengan nama user
-        return ResponseEntity.ok("Selamat datang, " + user.getNama());
+        return ResponseEntity.ok("Halo, " + user.getNama());
     }
 }
