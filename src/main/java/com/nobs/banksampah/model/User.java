@@ -1,6 +1,18 @@
 package com.nobs.banksampah.model;
 
-public class User {
+import java.util.Collection;
+import java.util.List;
+
+import org.springframework.data.mongodb.core.mapping.Document;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
+
+import lombok.Data;
+
+@Data
+@Document(collection = "User")
+public class User implements UserDetails {
 
     private String username;
     private String password;
@@ -8,62 +20,35 @@ public class User {
     private String alamat;
     private String norek;
     private double jumlahpoin;
-    private String role;
+    private Role role;
 
+    @Override
+    public Collection<? extends GrantedAuthority> getAuthorities() {
+        return List.of(new SimpleGrantedAuthority(role.name()));
+    }
+
+    @Override
     public String getUsername() {
-        return this.username;
+        return username;
     }
 
-    public void setUsername(String username) {
-        this.username = username;
+    @Override
+    public boolean isAccountNonExpired() {
+        return true;
     }
 
-    public String getPassword() {
-        return this.password;
+    @Override
+    public boolean isAccountNonLocked() {
+        return true;
     }
 
-    public void setPassword(String password) {
-        this.password = password;
+    @Override
+    public boolean isCredentialsNonExpired() {
+        return true;
     }
 
-    public String getNama() {
-        return this.nama;
+    @Override
+    public boolean isEnabled() {
+        return true;
     }
-
-    public void setNama(String nama) {
-        this.nama = nama;
-    }
-
-    public String getAlamat() {
-        return this.alamat;
-    }
-
-    public void setAlamat(String alamat) {
-        this.alamat = alamat;
-    }
-
-    public String getNorek() {
-        return this.norek;
-    }
-
-    public void setNorek(String norek) {
-        this.norek = norek;
-    }
-
-    public double getJumlahpoin() {
-        return this.jumlahpoin;
-    }
-
-    public void setJumlahpoin(double jumlahpoin) {
-        this.jumlahpoin = jumlahpoin;
-    }
-
-    public String getRole() {
-        return this.role;
-    }
-
-    public void setRole(String role) {
-        this.role = role;
-    }
-
 }

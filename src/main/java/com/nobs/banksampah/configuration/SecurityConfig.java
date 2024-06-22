@@ -1,54 +1,66 @@
 package com.nobs.banksampah.configuration;
 
-import com.nobs.banksampah.service.CustomUserDetailsService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
+import org.springframework.security.authentication.AuthenticationProvider;
+import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
+import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
+import org.springframework.security.config.http.SessionCreationPolicy;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
-import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+
+import com.nobs.banksampah.model.Role;
+import com.nobs.banksampah.service.UserService;
+
+import lombok.RequiredArgsConstructor;
 
 @Configuration
 @EnableWebSecurity
+@RequiredArgsConstructor
 public class SecurityConfig {
 
-    @Autowired
-    private CustomUserDetailsService customUserDetailsService;
-
-    @Autowired
-    private PasswordEncoderConfig passwordEncoderConfig;
-
-    @Autowired
-    public void configureGlobal(AuthenticationManagerBuilder auth) throws Exception {
-        auth
-                .userDetailsService(customUserDetailsService)
-                .passwordEncoder(passwordEncoderConfig.passwordEncoder());
-    }
-
-    @Bean
-    public AuthenticationManager authenticationManagerBean() throws Exception {
-        return authentication -> {
-            throw new UnsupportedOperationException("Custom authentication manager is not configured properly");
-        };
-    }
+    private final JwtAuthenticationFilter jwtAuthenticationFilter;
+    private final UserService userService;
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
-        http.authorizeHttpRequests(authorizeRequests -> authorizeRequests
-                .requestMatchers(new AntPathRequestMatcher("/api/login")).permitAll() // Allow access to /public/**
-                                                                                      // without authentication
-                .requestMatchers(new AntPathRequestMatcher("/api/admin/**")).hasRole("admin") // Require ADMIN role for
-                                                                                              // /admin/**
-                .requestMatchers(new AntPathRequestMatcher("/api/user")).hasRole("user")
-                .anyRequest().authenticated() // Require authentication for any other request
-        )
-                .logout(logout -> logout
-                        .permitAll() // Allow everyone to log out
-                );
+        http.csrf(AbstractHttpConfigurer::disable) // Matikan CSRF
+                .authorizeHttpRequests(request -> request
+                        .requestMatchers("/api/auth/**").permitAll()
+                        .requestMatchers("/api/admin").hasAuthority(Role.ADMIN.name())
+                        .requestMatchers("/api/user").hasAuthority(Role.USER.name())
+                        .anyRequest().authenticated())
+                .sessionManagement(manager -> manager
+                        .sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+                .authenticationProvider(authenticationProvider())
+                .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
 
         return http.build();
+    }
+
+    @Bean
+    public AuthenticationProvider authenticationProvider() {
+        DaoAuthenticationProvider authenticationProvider = new DaoAuthenticationProvider();
+        authenticationProvider.setUserDetailsService(userService.userDetailsService());
+        authenticationProvider.setPasswordEncoder(passwordEncoder()); // Encode password
+
+        return authenticationProvider;
+    }
+
+    // Fungsi encode password
+    @Bean
+    public PasswordEncoder passwordEncoder() {
+        return new BCryptPasswordEncoder();
+    }
+
+    @Bean
+    public AuthenticationManager authenticationManager(AuthenticationConfiguration config) throws Exception {
+        return config.getAuthenticationManager();
     }
 }
