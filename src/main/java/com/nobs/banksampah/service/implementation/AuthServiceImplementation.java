@@ -18,6 +18,8 @@ import com.nobs.banksampah.service.AuthService;
 import com.nobs.banksampah.service.JwtService;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.web.server.ResponseStatusException;
+import org.springframework.http.HttpStatus;
 
 @Service
 @RequiredArgsConstructor
@@ -28,9 +30,13 @@ public class AuthServiceImplementation implements AuthService {
     private final AuthenticationManager authenticationManager;
     private final JwtService jwtService;
 
+    @Override
     public User register(RegisterRequest registerRequest) {
-        User user = new User();
+        if (userRepository.findByUsername(registerRequest.getUsername()).isPresent()) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Username already exists");
+        }
 
+        User user = new User();
         user.setNama(registerRequest.getNama());
         user.setUsername(registerRequest.getUsername());
         user.setRole(Role.USER); // Role set otomatis menjadi user
@@ -42,40 +48,43 @@ public class AuthServiceImplementation implements AuthService {
         return userRepository.save(user);
     }
 
+    @Override
     public JwtResponse login(LoginRequest loginRequest) {
-        // Autentikasi akun
-        authenticationManager.authenticate(
-                new UsernamePasswordAuthenticationToken(loginRequest.getUsername(), loginRequest.getPassword()));
+        try {
+            authenticationManager.authenticate(
+                    new UsernamePasswordAuthenticationToken(loginRequest.getUsername(), loginRequest.getPassword()));
+        } catch (Exception e) {
+            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Invalid username or password");
+        }
 
         var user = userRepository.findByUsername(loginRequest.getUsername())
-                .orElseThrow(() -> new IllegalArgumentException("Password atau email salah"));
-        // Integrasi token ke user
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Invalid username or password"));
+
         var token = jwtService.generateToken(user);
-        // Membuat refresh token
         var refreshToken = jwtService.generateRefreshToken(new HashMap<>(), user);
 
         JwtResponse jwtResponse = new JwtResponse();
-        // Eksekusi token ke user
         jwtResponse.setToken(token);
         jwtResponse.setRefreshToken(refreshToken);
 
         return jwtResponse;
     }
 
+    @Override
     public JwtResponse refreshToken(RefreshTokenRequest refreshTokenRequest) {
         String username = jwtService.extractUsername(refreshTokenRequest.getToken());
-        User user = userRepository.findByUsername(username).orElseThrow();
+        User user = userRepository.findByUsername(username)
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Invalid token"));
 
         if (jwtService.isTokenValid(refreshTokenRequest.getToken(), user)) {
             var token = jwtService.generateToken(user);
             JwtResponse jwtResponse = new JwtResponse();
-            // Eksekusi token ke user
             jwtResponse.setToken(token);
             jwtResponse.setRefreshToken(refreshTokenRequest.getToken());
 
             return jwtResponse;
         }
 
-        return null;
+        throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Invalid token");
     }
 }
