@@ -19,7 +19,7 @@ public class UserController {
 
     private final UserRepository userRepository;
 
-    @GetMapping
+    @GetMapping("/getUser")
     public ResponseEntity<String> welcomeUser() {
         // Mendapatkan Authentication object dari SecurityContextHolder
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
