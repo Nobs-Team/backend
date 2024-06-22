@@ -1,6 +1,6 @@
 package com.nobs.banksampah.model;
 
-public class TrashModel {
+public class Trash {
 
     private String jenis;
     private String keterangan;
