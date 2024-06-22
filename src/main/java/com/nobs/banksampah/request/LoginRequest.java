@@ -1,13 +1,13 @@
-package com.nobs.banksampah.model;
+package com.nobs.banksampah.request;
 
-import org.springframework.data.mongodb.core.mapping.Document;
-
-@Document(collection = "Admin")
-public class Admin {
+public class LoginRequest {
 
     private String username;
     private String password;
-    private String role;
+
+    public LoginRequest() {
+
+    }
 
     public String getUsername() {
         return this.username;
@@ -23,14 +23,6 @@ public class Admin {
 
     public void setPassword(String password) {
         this.password = password;
-    }
-
-    public String getRole() {
-        return this.role;
-    }
-
-    public void setRole(String role) {
-        this.role = role;
     }
 
 }

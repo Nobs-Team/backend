@@ -1,16 +1,16 @@
 package com.nobs.banksampah.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.RestController;
 
 import com.nobs.banksampah.model.Admin;
 import com.nobs.banksampah.service.AdminService;
 
-@Controller
+@RestController
 @RequestMapping("/admin")
 public class AdminController {
 
