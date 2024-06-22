@@ -33,8 +33,8 @@ public class SecurityConfig {
         http.csrf(AbstractHttpConfigurer::disable) // Matikan CSRF
                 .authorizeHttpRequests(request -> request
                         .requestMatchers("/api/auth/**").permitAll()
-                        .requestMatchers("/api/admin").hasAuthority(Role.ADMIN.name())
-                        .requestMatchers("/api/user").hasAuthority(Role.USER.name())
+                        .requestMatchers("/api/admin/**").hasAuthority(Role.ADMIN.name())
+                        .requestMatchers("/api/user/**").hasAuthority(Role.USER.name())
                         .anyRequest().authenticated())
                 .sessionManagement(manager -> manager
                         .sessionCreationPolicy(SessionCreationPolicy.STATELESS))
