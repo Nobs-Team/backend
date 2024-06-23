@@ -5,4 +5,6 @@ import com.nobs.banksampah.model.Trash;
 public interface TrashService {
 
     Trash addTrash(Trash trash);
+
+    Trash getTrashById(String trashId);
 }

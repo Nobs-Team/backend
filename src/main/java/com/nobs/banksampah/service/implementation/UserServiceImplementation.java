@@ -1,10 +1,10 @@
 package com.nobs.banksampah.service.implementation;
 
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
+import com.nobs.banksampah.model.User;
 import com.nobs.banksampah.repository.UserRepository;
 import com.nobs.banksampah.service.UserService;
 
@@ -18,12 +18,16 @@ public class UserServiceImplementation implements UserService {
 
     @Override
     public UserDetailsService userDetailsService() {
-        return new UserDetailsService() {
-            @Override
-            public UserDetails loadUserByUsername(String username) {
-                return userRepository.findByUsername(username)
-                        .orElseThrow(() -> new UsernameNotFoundException("User tidak ditemukan"));
-            }
-        };
+        return (String username) -> userRepository.findByUsername(username)
+                .orElseThrow(() -> new UsernameNotFoundException("User tidak ditemukan"));
+    }
+
+    @Override
+    public User updateUserPoints(String username, double poin) {
+        User user = userRepository.findByUsername(username)
+                .orElseThrow(() -> new UsernameNotFoundException("User tidak ditemukan"));
+        user.setJumlahpoin(user.getJumlahpoin() + poin);
+
+        return userRepository.save(user);
     }
 }

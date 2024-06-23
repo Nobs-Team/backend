@@ -1,5 +1,8 @@
 package com.nobs.banksampah.controller;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.annotation.Secured;
@@ -18,12 +21,10 @@ import com.nobs.banksampah.model.User;
 import com.nobs.banksampah.repository.UserRepository;
 import com.nobs.banksampah.response.ApiResponse;
 import com.nobs.banksampah.service.TrashService;
+import com.nobs.banksampah.service.UserService;
 import com.nobs.banksampah.util.StringUtil;
 
 import lombok.RequiredArgsConstructor;
-
-import java.util.HashMap;
-import java.util.Map;
 
 @RestController
 @RequestMapping("/api/admin")
@@ -32,6 +33,7 @@ public class AdminController {
 
     private final UserRepository userRepository;
     private final TrashService trashService;
+    private final UserService userService;
 
     @GetMapping("/getAdmin")
     @Secured("ROLE_ADMIN")
@@ -64,6 +66,22 @@ public class AdminController {
         Trash addedTrash = trashService.addTrash(trash);
         ApiResponse<Trash> response = new ApiResponse<>(true, "Trash added successfully", addedTrash);
 
+        return ResponseEntity.ok(response);
+    }
+
+    @PostMapping("/addPoints")
+    @Secured("ROLE_ADMIN")
+    public ResponseEntity<ApiResponse<User>> addPoints(@RequestBody Map<String, Object> request) {
+        String username = (String) request.get("username");
+        String trashId = (String) request.get("trashId");
+
+        // Retrieve the Trash item
+        Trash trash = trashService.getTrashById(trashId);
+
+        // Add points to the user based on the Trash points
+        User updatedUser = userService.updateUserPoints(username, trash.getPoin());
+
+        ApiResponse<User> response = new ApiResponse<>(true, "Points added successfully", updatedUser);
         return ResponseEntity.ok(response);
     }
 
