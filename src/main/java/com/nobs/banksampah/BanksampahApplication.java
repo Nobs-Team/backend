@@ -20,6 +20,7 @@ public class BanksampahApplication implements CommandLineRunner {
 		SpringApplication.run(BanksampahApplication.class, args);
 	}
 
+	@Override
 	public void run(String... args) {
 		User adminAccount = userRepository.findByRole(Role.ADMIN);
 
