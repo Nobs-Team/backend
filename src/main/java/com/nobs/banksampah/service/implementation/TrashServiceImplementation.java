@@ -18,4 +18,10 @@ public class TrashServiceImplementation implements TrashService {
     public Trash addTrash(Trash trash) {
         return trashRepository.save(trash);
     }
+
+    @Override
+    public Trash getTrashById(String trashId) {
+        return trashRepository.findById(trashId)
+                .orElseThrow(() -> new RuntimeException("Sampah tidak ditemukan"));
+    }
 }
