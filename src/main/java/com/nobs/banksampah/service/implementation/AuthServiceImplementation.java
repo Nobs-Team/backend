@@ -58,7 +58,8 @@ public class AuthServiceImplementation implements AuthService {
         }
 
         var user = userRepository.findByUsername(loginRequest.getUsername())
-                .orElseThrow(() -> new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Invalid username or password"));
+                .orElseThrow(
+                        () -> new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Invalid username or password"));
 
         var token = jwtService.generateToken(user);
         var refreshToken = jwtService.generateRefreshToken(new HashMap<>(), user);
