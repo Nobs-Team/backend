@@ -7,13 +7,17 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.server.ResponseStatusException;
 
+import com.nobs.banksampah.model.Trash;
 import com.nobs.banksampah.model.User;
 import com.nobs.banksampah.repository.UserRepository;
 import com.nobs.banksampah.response.ApiResponse;
+import com.nobs.banksampah.service.TrashService;
 import com.nobs.banksampah.util.StringUtil;
 
 import lombok.RequiredArgsConstructor;
@@ -27,6 +31,7 @@ import java.util.Map;
 public class AdminController {
 
     private final UserRepository userRepository;
+    private final TrashService trashService;
 
     @GetMapping("/getAdmin")
     @Secured("ROLE_ADMIN")
@@ -50,6 +55,15 @@ public class AdminController {
         ApiResponse<Map<String, String>> response = new ApiResponse<>(true, "Login successful", data);
 
         // Mengembalikan response dengan nama user dalam format JSON
+        return ResponseEntity.ok(response);
+    }
+
+    @PostMapping("/addTrash")
+    @Secured("ROLE_ADMIN")
+    public ResponseEntity<ApiResponse<Trash>> addTrash(@RequestBody Trash trash) {
+        Trash addedTrash = trashService.addTrash(trash);
+        ApiResponse<Trash> response = new ApiResponse<>(true, "Trash added successfully", addedTrash);
+
         return ResponseEntity.ok(response);
     }
 
