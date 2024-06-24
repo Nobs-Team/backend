@@ -9,6 +9,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -20,6 +21,7 @@ import com.nobs.banksampah.model.User;
 import com.nobs.banksampah.repository.BankSampahRepository;
 import com.nobs.banksampah.repository.UserRepository;
 import com.nobs.banksampah.response.ApiResponse;
+import com.nobs.banksampah.service.UserService;
 import com.nobs.banksampah.util.StringUtil;
 
 import lombok.RequiredArgsConstructor;
@@ -31,6 +33,7 @@ public class UserController {
 
     private final UserRepository userRepository;
     private final BankSampahRepository bankSampahRepository;
+    private final UserService userService;
 
     @GetMapping("/getName")
     @Secured("ROLE_USER")
@@ -92,6 +95,22 @@ public class UserController {
         // Membuat API response
         ApiResponse<List<BankSampah>> response = new ApiResponse<>(true, "Bank sampah retrieved successfully",
                 bankSampah);
+
+        return ResponseEntity.ok(response);
+    }
+
+    @DeleteMapping("/deleteAccount")
+    @Secured("ROLE_USER")
+    public ResponseEntity<ApiResponse<Void>> deleteAccount() {
+        // Mendapatkan authentication object dari SecurityContextHolder
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        String username = authentication.getName();
+
+        // Hapus user
+        userService.deleteUserByUsername(username);
+
+        // Membuat API response
+        ApiResponse<Void> response = new ApiResponse<>(true, "Account deleted successfully");
 
         return ResponseEntity.ok(response);
     }
