@@ -9,8 +9,10 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -71,6 +73,18 @@ public class AdminController {
     public ResponseEntity<ApiResponse<Trash>> addTrash(@RequestBody Trash trash) {
         Trash addedTrash = trashService.addTrash(trash);
         ApiResponse<Trash> response = new ApiResponse<>(true, "Trash added successfully", addedTrash);
+
+        return ResponseEntity.ok(response);
+    }
+
+    @DeleteMapping("/deleteTrash/{trashId}")
+    @Secured("ROLE_ADMIN")
+    public ResponseEntity<ApiResponse<Void>> deleteTrash(@PathVariable String trashId) {
+        // Menghapus data sampah
+        trashService.deleteTrashById(trashId);
+
+        // Membuat API response
+        ApiResponse<Void> response = new ApiResponse<>(true, "Trash deleted successfully");
 
         return ResponseEntity.ok(response);
     }
