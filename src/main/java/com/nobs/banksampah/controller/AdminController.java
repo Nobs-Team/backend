@@ -113,11 +113,20 @@ public class AdminController {
         // Mendapatkan username
         String username = (String) request.get("username");
 
+        // Mendapatkan nilai poin user
+        double userPoints = userService.getUserPoints(username);
+
+        // Menambahkan proteksi apabila poin kurang dari 50
+        if (userPoints < 50) {
+            return ResponseEntity.badRequest().body(
+                    new ApiResponse<>(false, "User's points are less than 50. Reset operation not allowed.", null));
+        }
+
         // Reset poin
-        User updatePoint = userService.resetUserPoints(username);
+        User updatedUser = userService.resetUserPoints(username);
 
         // Membuat API response
-        ApiResponse<User> response = new ApiResponse<>(true, "Points exchange successfully", updatePoint);
+        ApiResponse<User> response = new ApiResponse<>(true, "Points reset successfully", updatedUser);
 
         return ResponseEntity.ok(response);
     }
