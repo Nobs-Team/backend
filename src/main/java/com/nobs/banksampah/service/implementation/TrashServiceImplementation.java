@@ -1,5 +1,6 @@
 package com.nobs.banksampah.service.implementation;
 
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
 import com.nobs.banksampah.model.Trash;
@@ -23,5 +24,12 @@ public class TrashServiceImplementation implements TrashService {
     public Trash getTrashById(String trashId) {
         return trashRepository.findById(trashId)
                 .orElseThrow(() -> new RuntimeException("Sampah tidak ditemukan"));
+    }
+
+    @Override
+    public void deleteTrashById(String trashId) {
+        Trash trash = trashRepository.findById(trashId)
+                .orElseThrow(() -> new UsernameNotFoundException("User tidak ditemukan"));
+        trashRepository.delete(trash);
     }
 }
