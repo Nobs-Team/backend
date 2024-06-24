@@ -39,4 +39,11 @@ public class UserServiceImplementation implements UserService {
 
         return userRepository.save(user);
     }
+
+    @Override
+    public void deleteUserByUsername(String username) {
+        User user = userRepository.findByUsername(username)
+                .orElseThrow(() -> new UsernameNotFoundException("User tidak ditemukan"));
+        userRepository.delete(user);
+    }
 }

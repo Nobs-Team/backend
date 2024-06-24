@@ -11,4 +11,6 @@ public interface UserService {
     User updateUserPoints(String username, double poin);
 
     User resetUserPoints(String username);
+
+    void deleteUserByUsername(String username);
 }
