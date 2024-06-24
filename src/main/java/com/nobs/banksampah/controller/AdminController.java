@@ -146,6 +146,18 @@ public class AdminController {
         return ResponseEntity.ok(response);
     }
 
+    @DeleteMapping("/deleteBankSampah/{bankSampahId}")
+    @Secured("ROLE_ADMIN")
+    public ResponseEntity<ApiResponse<Void>> deleteBankSampah(@PathVariable String bankSampahId) {
+        // Menghapus data bank sampah
+        bankSampahService.deleteBankSampahById(bankSampahId);
+
+        // Membuat API response
+        ApiResponse<Void> response = new ApiResponse<>(true, "Bank sampah deleted successfully");
+
+        return ResponseEntity.ok(response);
+    }
+
     // Penanganan kesalahan khusus
     @ExceptionHandler(ResponseStatusException.class)
     public ResponseEntity<ApiResponse<Void>> handleResponseStatusException(ResponseStatusException ex) {

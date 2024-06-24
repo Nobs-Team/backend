@@ -18,4 +18,11 @@ public class BankSampahServiceImplementation implements BankSampahService {
     public BankSampah addBankSampah(BankSampah bankSampah) {
         return bankSampahRepository.save(bankSampah);
     }
+
+    @Override
+    public void deleteBankSampahById(String bankSampahId) {
+        BankSampah bankSampah = bankSampahRepository.findById(bankSampahId)
+                .orElseThrow(() -> new RuntimeException("Bank sampah tidak ditemukan"));
+        bankSampahRepository.delete(bankSampah);
+    }
 }
