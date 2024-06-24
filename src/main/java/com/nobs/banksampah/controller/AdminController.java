@@ -1,6 +1,7 @@
 package com.nobs.banksampah.controller;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import org.springframework.http.HttpStatus;
@@ -16,6 +17,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.server.ResponseStatusException;
 
+import com.nobs.banksampah.model.Role;
 import com.nobs.banksampah.model.Trash;
 import com.nobs.banksampah.model.User;
 import com.nobs.banksampah.repository.UserRepository;
@@ -75,13 +77,27 @@ public class AdminController {
         String username = (String) request.get("username");
         String trashId = (String) request.get("trashId");
 
-        // Retrieve the Trash item
+        // Mendapatkan data sampah berdasarkan ID
         Trash trash = trashService.getTrashById(trashId);
 
-        // Add points to the user based on the Trash points
+        // Menambahkan poin ke user dari data sampah yang ada di database
         User updatedUser = userService.updateUserPoints(username, trash.getPoin());
 
+        // Membuat API response
         ApiResponse<User> response = new ApiResponse<>(true, "Points added successfully", updatedUser);
+
+        return ResponseEntity.ok(response);
+    }
+
+    @GetMapping("/getUsers")
+    @Secured("ROLE_ADMIN")
+    public ResponseEntity<ApiResponse<List<User>>> getUsers() {
+        // Mendapatkan semua user dengan role USER dari repository
+        List<User> usersWithUserRole = userRepository.findAllByRole(Role.USER);
+
+        // Membuat ApiResponse
+        ApiResponse<List<User>> response = new ApiResponse<>(true, "Users retrieved successfully", usersWithUserRole);
+
         return ResponseEntity.ok(response);
     }
 
