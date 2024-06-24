@@ -18,11 +18,13 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.server.ResponseStatusException;
 
+import com.nobs.banksampah.model.BankSampah;
 import com.nobs.banksampah.model.Role;
 import com.nobs.banksampah.model.Trash;
 import com.nobs.banksampah.model.User;
 import com.nobs.banksampah.repository.UserRepository;
 import com.nobs.banksampah.response.ApiResponse;
+import com.nobs.banksampah.service.BankSampahService;
 import com.nobs.banksampah.service.TrashService;
 import com.nobs.banksampah.service.UserService;
 import com.nobs.banksampah.util.StringUtil;
@@ -37,6 +39,7 @@ public class AdminController {
     private final UserRepository userRepository;
     private final TrashService trashService;
     private final UserService userService;
+    private final BankSampahService bankSampahService;
 
     @GetMapping("/getAdmin")
     @Secured("ROLE_ADMIN")
@@ -111,8 +114,20 @@ public class AdminController {
         // Mendapatkan semua user dengan role USER dari repository
         List<User> usersWithUserRole = userRepository.findAllByRole(Role.USER);
 
-        // Membuat ApiResponse
+        // Membuat Api Response
         ApiResponse<List<User>> response = new ApiResponse<>(true, "Users retrieved successfully", usersWithUserRole);
+
+        return ResponseEntity.ok(response);
+    }
+
+    @PostMapping("/addBankSampah")
+    @Secured("ROLE_ADMIN")
+    public ResponseEntity<ApiResponse<BankSampah>> addBankSampah(@RequestBody BankSampah bankSampah) {
+        // Menambahkan bank sampah
+        BankSampah addBankSampah = bankSampahService.addBankSampah(bankSampah);
+
+        // Membuat API response
+        ApiResponse<BankSampah> response = new ApiResponse<>(true, "Bank Sampah added successfully", addBankSampah);
 
         return ResponseEntity.ok(response);
     }

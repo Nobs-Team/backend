@@ -6,13 +6,12 @@ import org.springframework.data.mongodb.core.mapping.Document;
 import lombok.Data;
 
 @Data
-@Document(collection = "Trash")
-public class Trash {
+@Document(collection = "BankSampah")
+public class BankSampah {
 
     @Id
     private String id;
 
-    private String jenis;
-    private String keterangan;
-    private double poin;
+    private String nama;
+    private String alamat;
 }
