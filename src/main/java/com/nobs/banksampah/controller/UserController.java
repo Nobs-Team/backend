@@ -1,6 +1,7 @@
 package com.nobs.banksampah.controller;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import org.springframework.http.HttpStatus;
@@ -14,7 +15,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.server.ResponseStatusException;
 
+import com.nobs.banksampah.model.BankSampah;
 import com.nobs.banksampah.model.User;
+import com.nobs.banksampah.repository.BankSampahRepository;
 import com.nobs.banksampah.repository.UserRepository;
 import com.nobs.banksampah.response.ApiResponse;
 import com.nobs.banksampah.util.StringUtil;
@@ -27,6 +30,7 @@ import lombok.RequiredArgsConstructor;
 public class UserController {
 
     private final UserRepository userRepository;
+    private final BankSampahRepository bankSampahRepository;
 
     @GetMapping("/getName")
     @Secured("ROLE_USER")
@@ -76,6 +80,19 @@ public class UserController {
         ApiResponse<Map<String, String>> response = new ApiResponse<>(true, "Poin retrieved successfully", data);
 
         // Mengembalikkan poin dalam format JSON
+        return ResponseEntity.ok(response);
+    }
+
+    @GetMapping("/getBankSampah")
+    @Secured("ROLE_USER")
+    public ResponseEntity<ApiResponse<List<BankSampah>>> getBankSampah() {
+        // Mendapatkan data bank sampah
+        List<BankSampah> bankSampah = bankSampahRepository.findAll();
+
+        // Membuat API response
+        ApiResponse<List<BankSampah>> response = new ApiResponse<>(true, "Bank sampah retrieved successfully",
+                bankSampah);
+
         return ResponseEntity.ok(response);
     }
 
