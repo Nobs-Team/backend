@@ -12,6 +12,9 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.server.ResponseStatusException;
@@ -22,7 +25,6 @@ import com.nobs.banksampah.repository.BankSampahRepository;
 import com.nobs.banksampah.repository.UserRepository;
 import com.nobs.banksampah.response.ApiResponse;
 import com.nobs.banksampah.service.UserService;
-import com.nobs.banksampah.util.StringUtil;
 
 import lombok.RequiredArgsConstructor;
 
@@ -35,28 +37,31 @@ public class UserController {
     private final BankSampahRepository bankSampahRepository;
     private final UserService userService;
 
-    @GetMapping("/getName")
+    @GetMapping("/{id}")
     @Secured("ROLE_USER")
-    public ResponseEntity<ApiResponse<Map<String, String>>> welcomeUser() {
-        // Mendapatkan Authentication object dari SecurityContextHolder
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        String username = authentication.getName();
+    public ResponseEntity<ApiResponse<User>> getProfileById(@PathVariable("id") String id) {
+        // Mendapatkan user dari repository berdasarkan ID
+        User user = userService.getUserById(id);
 
-        // Mengambil user dari repository berdasarkan username
-        User user = userRepository.findByUsername(username)
-                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "User tidak ditemukan"));
+        // Membuat API response
+        ApiResponse<User> response = new ApiResponse<>(true, "Profil retrieved successfully", user);
 
-        // Capitalize the first letter of the user's name
-        String capitalizedNama = StringUtil.capitalizeFirstLetter(user.getNama());
+        return ResponseEntity.ok(response);
+    }
 
-        // Membuat response map
-        Map<String, String> data = new HashMap<>();
-        data.put("name", capitalizedNama);
+    @PutMapping("/{id}")
+    @Secured("ROLE_USER")
+    public ResponseEntity<ApiResponse<User>> updateProfileById(@PathVariable("id") String id,
+            @RequestBody Map<String, Object> updates) {
+        // Mendapatkan user dari repository berdasarkan ID
+        User user = userService.getUserById(id);
 
-        // Membuat ApiResponse
-        ApiResponse<Map<String, String>> response = new ApiResponse<>(true, "Login successful", data);
+        // Simpan perubahan pada repository menggunakan service
+        User updatedUser = userService.updateUserProfile(user.getUsername(), updates);
 
-        // Mengembalikan response dengan nama user dalam format JSON
+        // Membuat API response
+        ApiResponse<User> response = new ApiResponse<>(true, "Profile updated successfully", updatedUser);
+
         return ResponseEntity.ok(response);
     }
 
