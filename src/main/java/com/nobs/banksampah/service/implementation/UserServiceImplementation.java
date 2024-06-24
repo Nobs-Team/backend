@@ -30,4 +30,13 @@ public class UserServiceImplementation implements UserService {
 
         return userRepository.save(user);
     }
+
+    @Override
+    public User resetUserPoints(String username) {
+        User user = userRepository.findByUsername(username)
+                .orElseThrow(() -> new UsernameNotFoundException("User tidak ditemukan"));
+        user.setJumlahpoin(0);
+
+        return userRepository.save(user);
+    }
 }

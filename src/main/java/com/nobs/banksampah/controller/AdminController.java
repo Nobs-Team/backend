@@ -12,6 +12,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -71,7 +72,7 @@ public class AdminController {
         return ResponseEntity.ok(response);
     }
 
-    @PostMapping("/addPoints")
+    @PutMapping("/addPoints")
     @Secured("ROLE_ADMIN")
     public ResponseEntity<ApiResponse<User>> addPoints(@RequestBody Map<String, Object> request) {
         String username = (String) request.get("username");
@@ -85,6 +86,21 @@ public class AdminController {
 
         // Membuat API response
         ApiResponse<User> response = new ApiResponse<>(true, "Points added successfully", updatedUser);
+
+        return ResponseEntity.ok(response);
+    }
+
+    @PutMapping("/resetPoints")
+    @Secured("ROLE_ADMIN")
+    public ResponseEntity<ApiResponse<User>> resetPoints(@RequestBody Map<String, Object> request) {
+        // Mendapatkan username
+        String username = (String) request.get("username");
+
+        // Reset poin
+        User updatePoint = userService.resetUserPoints(username);
+
+        // Membuat API response
+        ApiResponse<User> response = new ApiResponse<>(true, "Points exchange successfully", updatePoint);
 
         return ResponseEntity.ok(response);
     }
