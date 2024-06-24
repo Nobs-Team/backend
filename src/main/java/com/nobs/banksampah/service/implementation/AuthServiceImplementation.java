@@ -42,7 +42,6 @@ public class AuthServiceImplementation implements AuthService {
         user.setUsername(registerRequest.getUsername());
         user.setRole(Role.USER); // Role set otomatis menjadi user
         user.setPassword(passwordEncoder.encode(registerRequest.getPassword()));
-        user.setNorek(registerRequest.getNorek());
         user.setAlamat(registerRequest.getAlamat());
         user.setJumlahpoin(0);
 

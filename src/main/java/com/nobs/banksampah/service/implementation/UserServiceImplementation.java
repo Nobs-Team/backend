@@ -60,7 +60,6 @@ public class UserServiceImplementation implements UserService {
             switch (key) {
                 case "nama" -> user.setNama((String) value);
                 case "alamat" -> user.setAlamat((String) value);
-                case "norek" -> user.setNorek((String) value);
                 case "password" -> {
                     String newPassword = (String) value;
                     user.setPassword(new BCryptPasswordEncoder().encode(newPassword));

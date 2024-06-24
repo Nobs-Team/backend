@@ -25,7 +25,6 @@ public class User implements UserDetails {
     private String password;
     private String nama;
     private String alamat;
-    private String norek;
     private double jumlahpoin;
     private Role role;
 
