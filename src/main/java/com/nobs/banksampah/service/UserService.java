@@ -1,5 +1,7 @@
 package com.nobs.banksampah.service;
 
+import java.util.Map;
+
 import org.springframework.security.core.userdetails.UserDetailsService;
 
 import com.nobs.banksampah.model.User;
@@ -13,4 +15,8 @@ public interface UserService {
     User resetUserPoints(String username);
 
     void deleteUserByUsername(String username);
+
+    User updateUserProfile(String username, Map<String, Object> updates);
+
+    User getUserById(String id);
 }
