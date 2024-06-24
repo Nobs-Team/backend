@@ -78,4 +78,11 @@ public class UserServiceImplementation implements UserService {
         return userRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("User tidak ditemukan"));
     }
+
+    @Override
+    public double getUserPoints(String username) {
+        User user = userRepository.findByUsername(username)
+                .orElseThrow(() -> new UsernameNotFoundException("User tidak ditemukan"));
+        return user.getJumlahpoin();
+    }
 }
