@@ -1,5 +1,8 @@
 package com.nobs.banksampah.controller;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.annotation.Secured;
@@ -18,9 +21,6 @@ import com.nobs.banksampah.util.StringUtil;
 
 import lombok.RequiredArgsConstructor;
 
-import java.util.HashMap;
-import java.util.Map;
-
 @RestController
 @RequestMapping("/api/user")
 @RequiredArgsConstructor
@@ -28,7 +28,7 @@ public class UserController {
 
     private final UserRepository userRepository;
 
-    @GetMapping("/getUser")
+    @GetMapping("/getName")
     @Secured("ROLE_USER")
     public ResponseEntity<ApiResponse<Map<String, String>>> welcomeUser() {
         // Mendapatkan Authentication object dari SecurityContextHolder

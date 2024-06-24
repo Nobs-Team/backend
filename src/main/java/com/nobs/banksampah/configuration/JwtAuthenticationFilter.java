@@ -58,13 +58,9 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
                 securityContext.setAuthentication(token);
                 SecurityContextHolder.setContext(securityContext);
-
-                System.out.println("Authentication berhasil untuk user: " + username);
             } else {
-                System.out.println("Token tidak valid untuk user: " + username);
             }
         } else {
-            System.out.println("User tidak ditemukan atau terautentikasi: " + username);
         }
         filterChain.doFilter(request, response);
     }

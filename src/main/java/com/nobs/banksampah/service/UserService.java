@@ -9,4 +9,6 @@ public interface UserService {
     UserDetailsService userDetailsService();
 
     User updateUserPoints(String username, double poin);
+
+    User resetUserPoints(String username);
 }
