@@ -24,7 +24,7 @@ public class JwtServiceImplementation implements JwtService {
     public String generateToken(UserDetails userDetails) {
         return Jwts.builder().setSubject(userDetails.getUsername())
                 .setIssuedAt(new Date(System.currentTimeMillis()))
-                .setExpiration(new Date(System.currentTimeMillis() + 1000 * 60 * 24)) // Token untuk satu hari
+                .setExpiration(new Date(System.currentTimeMillis() + 1000 * 60 * 60 * 24)) // Token untuk 1 hari
                 .signWith(getSigningKey(), SignatureAlgorithm.HS256)
                 .compact();
     }
@@ -33,7 +33,7 @@ public class JwtServiceImplementation implements JwtService {
     public String generateRefreshToken(Map<String, Object> extraClaims, UserDetails userDetails) {
         return Jwts.builder().setClaims(extraClaims).setSubject(userDetails.getUsername())
                 .setIssuedAt(new Date(System.currentTimeMillis()))
-                .setExpiration(new Date(System.currentTimeMillis() + 604800000)) // Token untuk satu minggu
+                .setExpiration(new Date(System.currentTimeMillis() + 432000000)) // Token untuk 5 hari
                 .signWith(getSigningKey(), SignatureAlgorithm.HS256)
                 .compact();
     }
