@@ -62,7 +62,7 @@ public class AdminController {
         data.put("name", capitalizedNama);
 
         // Membuat ApiResponse
-        ApiResponse<Map<String, String>> response = new ApiResponse<>(true, "Login successful", data);
+        ApiResponse<Map<String, String>> response = new ApiResponse<>(true, "Berhasil login", data);
 
         // Mengembalikan response dengan nama user dalam format JSON
         return ResponseEntity.ok(response);
@@ -72,7 +72,7 @@ public class AdminController {
     @Secured("ROLE_ADMIN")
     public ResponseEntity<ApiResponse<Trash>> addTrash(@RequestBody Trash trash) {
         Trash addedTrash = trashService.addTrash(trash);
-        ApiResponse<Trash> response = new ApiResponse<>(true, "Trash added successfully", addedTrash);
+        ApiResponse<Trash> response = new ApiResponse<>(true, "Berhasil menambah sampah", addedTrash);
 
         return ResponseEntity.ok(response);
     }
@@ -84,7 +84,7 @@ public class AdminController {
         trashService.deleteTrashById(trashId);
 
         // Membuat API response
-        ApiResponse<Void> response = new ApiResponse<>(true, "Trash deleted successfully");
+        ApiResponse<Void> response = new ApiResponse<>(true, "Sampah berhasil dihapus");
 
         return ResponseEntity.ok(response);
     }
@@ -102,7 +102,7 @@ public class AdminController {
         User updatedUser = userService.updateUserPoints(username, trash.getPoin());
 
         // Membuat API response
-        ApiResponse<User> response = new ApiResponse<>(true, "Points added successfully", updatedUser);
+        ApiResponse<User> response = new ApiResponse<>(true, "Berhasil menambah Poin", updatedUser);
 
         return ResponseEntity.ok(response);
     }
@@ -119,14 +119,14 @@ public class AdminController {
         // Menambahkan proteksi apabila poin kurang dari 50
         if (userPoints < 50) {
             return ResponseEntity.badRequest().body(
-                    new ApiResponse<>(false, "User's points are less than 50. Reset operation not allowed.", null));
+                    new ApiResponse<>(false, "Poin pengguna kurang dari 50, minimal penukaran poin adalah 50", null));
         }
 
         // Reset poin
         User updatedUser = userService.resetUserPoints(username);
 
         // Membuat API response
-        ApiResponse<User> response = new ApiResponse<>(true, "Points reset successfully", updatedUser);
+        ApiResponse<User> response = new ApiResponse<>(true, "Berhasil menukarkan poin", updatedUser);
 
         return ResponseEntity.ok(response);
     }
@@ -138,7 +138,7 @@ public class AdminController {
         List<User> usersWithUserRole = userRepository.findAllByRole(Role.USER);
 
         // Membuat Api Response
-        ApiResponse<List<User>> response = new ApiResponse<>(true, "Users retrieved successfully", usersWithUserRole);
+        ApiResponse<List<User>> response = new ApiResponse<>(true, "Data pengguna berhasil diambil", usersWithUserRole);
 
         return ResponseEntity.ok(response);
     }
@@ -150,7 +150,7 @@ public class AdminController {
         BankSampah addBankSampah = bankSampahService.addBankSampah(bankSampah);
 
         // Membuat API response
-        ApiResponse<BankSampah> response = new ApiResponse<>(true, "Bank Sampah added successfully", addBankSampah);
+        ApiResponse<BankSampah> response = new ApiResponse<>(true, "Berhasil menambah Bank Sampah", addBankSampah);
 
         return ResponseEntity.ok(response);
     }
@@ -162,7 +162,7 @@ public class AdminController {
         bankSampahService.deleteBankSampahById(bankSampahId);
 
         // Membuat API response
-        ApiResponse<Void> response = new ApiResponse<>(true, "Bank sampah deleted successfully");
+        ApiResponse<Void> response = new ApiResponse<>(true, "Bank Sampah berhasil dihapus");
 
         return ResponseEntity.ok(response);
     }

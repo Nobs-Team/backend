@@ -44,7 +44,7 @@ public class UserController {
         User user = userService.getUserById(id);
 
         // Membuat API response
-        ApiResponse<User> response = new ApiResponse<>(true, "Profil retrieved successfully", user);
+        ApiResponse<User> response = new ApiResponse<>(true, "Berhasil mendapatkan data profil", user);
 
         return ResponseEntity.ok(response);
     }
@@ -60,7 +60,7 @@ public class UserController {
         User updatedUser = userService.updateUserProfile(user.getUsername(), updates);
 
         // Membuat API response
-        ApiResponse<User> response = new ApiResponse<>(true, "Profile updated successfully", updatedUser);
+        ApiResponse<User> response = new ApiResponse<>(true, "Update profil berhasil", updatedUser);
 
         return ResponseEntity.ok(response);
     }
@@ -85,7 +85,7 @@ public class UserController {
         data.put("poin", formattedPoin);
 
         // Membuat ApiResponse
-        ApiResponse<Map<String, String>> response = new ApiResponse<>(true, "Poin retrieved successfully", data);
+        ApiResponse<Map<String, String>> response = new ApiResponse<>(true, "Berhasil mendapat data poin", data);
 
         // Mengembalikkan poin dalam format JSON
         return ResponseEntity.ok(response);
@@ -98,7 +98,7 @@ public class UserController {
         List<BankSampah> bankSampah = bankSampahRepository.findAll();
 
         // Membuat API response
-        ApiResponse<List<BankSampah>> response = new ApiResponse<>(true, "Bank sampah retrieved successfully",
+        ApiResponse<List<BankSampah>> response = new ApiResponse<>(true, "Berhasil menadapat data Bank Sampah",
                 bankSampah);
 
         return ResponseEntity.ok(response);
@@ -115,7 +115,7 @@ public class UserController {
         userService.deleteUserByUsername(username);
 
         // Membuat API response
-        ApiResponse<Void> response = new ApiResponse<>(true, "Account deleted successfully");
+        ApiResponse<Void> response = new ApiResponse<>(true, "Akun berhasil dihapus");
 
         return ResponseEntity.ok(response);
     }
