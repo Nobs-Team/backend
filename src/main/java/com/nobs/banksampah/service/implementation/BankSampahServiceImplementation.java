@@ -1,5 +1,7 @@
 package com.nobs.banksampah.service.implementation;
 
+import java.util.Map;
+
 import org.springframework.stereotype.Service;
 
 import com.nobs.banksampah.model.BankSampah;
@@ -24,5 +26,23 @@ public class BankSampahServiceImplementation implements BankSampahService {
         BankSampah bankSampah = bankSampahRepository.findById(bankSampahId)
                 .orElseThrow(() -> new RuntimeException("Bank sampah tidak ditemukan"));
         bankSampahRepository.delete(bankSampah);
+    }
+
+    @Override
+    public BankSampah updateBankSampahById(String bankSampahId, Map<String, Object> updates) {
+        BankSampah bankSampah = bankSampahRepository.findById(bankSampahId)
+                .orElseThrow(() -> new RuntimeException("Bank sampah tidak ditemukan"));
+
+        // Update hanya field yang ada di updates map
+        updates.forEach((key, value) -> {
+            switch (key) {
+                case "nama" -> bankSampah.setNama((String) value);
+                case "alamat" -> bankSampah.setAlamat((String) value);
+                default -> {
+                }
+            }
+        });
+
+        return bankSampahRepository.save(bankSampah);
     }
 }
