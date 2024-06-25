@@ -29,21 +29,21 @@ public class ApiGatewayController {
     @PostMapping("/register")
     public ResponseEntity<ApiResponse<User>> register(@RequestBody RegisterRequest registerRequest) {
         User registeredUser = authService.register(registerRequest);
-        ApiResponse<User> response = new ApiResponse<>(true, "Registration successful", registeredUser);
+        ApiResponse<User> response = new ApiResponse<>(true, "Registrasi Berhasil", registeredUser);
         return ResponseEntity.ok(response);
     }
 
     @PostMapping("/login")
     public ResponseEntity<ApiResponse<JwtResponse>> login(@RequestBody LoginRequest loginRequest) {
         JwtResponse jwtResponse = authService.login(loginRequest);
-        ApiResponse<JwtResponse> response = new ApiResponse<>(true, "Login successful", jwtResponse);
+        ApiResponse<JwtResponse> response = new ApiResponse<>(true, "Berhasil Login", jwtResponse);
         return ResponseEntity.ok(response);
     }
 
     @PostMapping("/refresh")
     public ResponseEntity<ApiResponse<JwtResponse>> refresh(@RequestBody RefreshTokenRequest refreshTokenRequest) {
         JwtResponse jwtResponse = authService.refreshToken(refreshTokenRequest);
-        ApiResponse<JwtResponse> response = new ApiResponse<>(true, "Token refreshed successfully", jwtResponse);
+        ApiResponse<JwtResponse> response = new ApiResponse<>(true, "Token berhasil direfresh", jwtResponse);
         return ResponseEntity.ok(response);
     }
 
