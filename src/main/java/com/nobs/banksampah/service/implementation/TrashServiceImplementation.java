@@ -1,5 +1,7 @@
 package com.nobs.banksampah.service.implementation;
 
+import java.util.Map;
+
 import org.springframework.stereotype.Service;
 
 import com.nobs.banksampah.model.Trash;
@@ -30,5 +32,23 @@ public class TrashServiceImplementation implements TrashService {
         Trash trash = trashRepository.findById(trashId)
                 .orElseThrow(() -> new RuntimeException("User tidak ditemukan"));
         trashRepository.delete(trash);
+    }
+
+    @Override
+    public Trash updateTrashById(String trashId, Map<String, Object> updates) {
+        Trash trash = trashRepository.findById(trashId)
+                .orElseThrow(() -> new RuntimeException("Sampah tidak ditemukan"));
+
+        updates.forEach((key, value) -> {
+            switch (key) {
+                case "jenis" -> trash.setJenis((String) value);
+                case "keterangan" -> trash.setKeterangan((String) value);
+                case "poin" -> trash.setPoin((double) value);
+                default -> {
+                }
+            }
+        });
+
+        return trashRepository.save(trash);
     }
 }

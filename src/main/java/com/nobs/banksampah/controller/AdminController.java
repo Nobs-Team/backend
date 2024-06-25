@@ -89,6 +89,19 @@ public class AdminController {
         return ResponseEntity.ok(response);
     }
 
+    @PutMapping("/editSampah/{trashId}")
+    @Secured("ROLE_ADMIN")
+    public ResponseEntity<ApiResponse<Trash>> editSampah(@PathVariable String trashId,
+            @RequestBody Map<String, Object> updates) {
+        // Memperbarui data bank sampah
+        Trash updatedTrash = trashService.updateTrashById(trashId, updates);
+        // Membuat API response
+        ApiResponse<Trash> response = new ApiResponse<>(true, "Trash updated successfully",
+                updatedTrash);
+
+        return ResponseEntity.ok(response);
+    }
+
     @PutMapping("/addPoints")
     @Secured("ROLE_ADMIN")
     public ResponseEntity<ApiResponse<User>> addPoints(@RequestBody Map<String, Object> request) {
