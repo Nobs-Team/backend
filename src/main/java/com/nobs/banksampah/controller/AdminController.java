@@ -167,6 +167,20 @@ public class AdminController {
         return ResponseEntity.ok(response);
     }
 
+    @PutMapping("/editBankSampah/{bankSampahId}")
+    @Secured("ROLE_ADMIN")
+    public ResponseEntity<ApiResponse<BankSampah>> editBankSampah(@PathVariable String bankSampahId,
+            @RequestBody Map<String, Object> updates) {
+        // Memperbarui data bank sampah
+        BankSampah updatedBankSampah = bankSampahService.updateBankSampahById(bankSampahId, updates);
+
+        // Membuat API response
+        ApiResponse<BankSampah> response = new ApiResponse<>(true, "Bank sampah updated successfully",
+                updatedBankSampah);
+
+        return ResponseEntity.ok(response);
+    }
+
     // Penanganan kesalahan khusus
     @ExceptionHandler(ResponseStatusException.class)
     public ResponseEntity<ApiResponse<Void>> handleResponseStatusException(ResponseStatusException ex) {
