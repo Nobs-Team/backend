@@ -22,7 +22,7 @@ import org.springframework.web.server.ResponseStatusException;
 @RestController
 @RequestMapping("/api/auth")
 @RequiredArgsConstructor
-public class ApiGatewayController {
+public class AuthContoller {
 
     private final AuthService authService;
 
