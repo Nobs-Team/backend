@@ -12,7 +12,6 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -37,11 +36,15 @@ public class UserController {
     private final BankSampahRepository bankSampahRepository;
     private final UserService userService;
 
-    @GetMapping("/{id}")
+    @GetMapping("/profile")
     @Secured("ROLE_USER")
-    public ResponseEntity<ApiResponse<User>> getProfileById(@PathVariable("id") String id) {
-        // Mendapatkan user dari repository berdasarkan ID
-        User user = userService.getUserById(id);
+    public ResponseEntity<ApiResponse<User>> getProfile() {
+        // Mendapatkan Authentication object dari SecurityContextHolder
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        String username = authentication.getName();
+
+        // Mendapatkan user dari service berdasarkan username
+        User user = userService.getUserByUsername(username);
 
         // Membuat API response
         ApiResponse<User> response = new ApiResponse<>(true, "Berhasil mendapatkan data profil", user);
@@ -49,15 +52,15 @@ public class UserController {
         return ResponseEntity.ok(response);
     }
 
-    @PutMapping("/{id}")
+    @PutMapping("/profile")
     @Secured("ROLE_USER")
-    public ResponseEntity<ApiResponse<User>> updateProfileById(@PathVariable("id") String id,
-            @RequestBody Map<String, Object> updates) {
-        // Mendapatkan user dari repository berdasarkan ID
-        User user = userService.getUserById(id);
+    public ResponseEntity<ApiResponse<User>> updateProfile(@RequestBody Map<String, Object> updates) {
+        // Mendapatkan Authentication object dari SecurityContextHolder
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        String username = authentication.getName();
 
         // Simpan perubahan pada repository menggunakan service
-        User updatedUser = userService.updateUserProfile(user.getUsername(), updates);
+        User updatedUser = userService.updateUserProfile(username, updates);
 
         // Membuat API response
         ApiResponse<User> response = new ApiResponse<>(true, "Update profil berhasil", updatedUser);

@@ -18,7 +18,7 @@ public interface UserService {
 
     User updateUserProfile(String username, Map<String, Object> updates);
 
-    User getUserById(String id);
+    User getUserByUsername(String username);
 
     double getUserPoints(String username);
 }
