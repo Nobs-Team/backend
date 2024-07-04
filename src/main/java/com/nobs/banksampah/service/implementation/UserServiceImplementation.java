@@ -73,9 +73,9 @@ public class UserServiceImplementation implements UserService {
     }
 
     @Override
-    public User getUserById(String id) {
-        return userRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("User tidak ditemukan"));
+    public User getUserByUsername(String username) {
+        return userRepository.findByUsername(username)
+                .orElseThrow(() -> new UsernameNotFoundException("User tidak ditemukan"));
     }
 
     @Override
