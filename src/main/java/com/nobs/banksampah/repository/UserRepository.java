@@ -1,20 +1,20 @@
 package com.nobs.banksampah.repository;
 
-import java.util.List;
-import java.util.Optional;
-
-import org.springframework.data.mongodb.repository.MongoRepository;
-import org.springframework.stereotype.Repository;
-
 import com.nobs.banksampah.model.Role;
 import com.nobs.banksampah.model.User;
+import java.util.List;
+import java.util.Optional;
+import org.springframework.data.mongodb.repository.MongoRepository;
+import org.springframework.stereotype.Repository;
 
 @Repository
 public interface UserRepository extends MongoRepository<User, String> {
 
-    Optional<User> findByUsername(String username);
+  boolean existsByUsername(String username);
 
-    User findByRole(Role role);
+  Optional<User> findByUsername(String username);
 
-    List<User> findAllByRole(Role role);
+  User findByRole(Role role);
+
+  List<User> findAllByRole(Role role);
 }

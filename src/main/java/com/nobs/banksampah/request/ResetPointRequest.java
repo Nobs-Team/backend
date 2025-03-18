@@ -3,8 +3,7 @@ package com.nobs.banksampah.request;
 import lombok.Data;
 
 @Data
-public class LoginRequest {
+public class ResetPointRequest {
 
   private String username;
-  private String password;
 }

@@ -3,8 +3,9 @@ package com.nobs.banksampah.request;
 import lombok.Data;
 
 @Data
-public class LoginRequest {
+public class ProfileRequest {
 
-  private String username;
+  private String nama;
+  private String alamat;
   private String password;
 }
