@@ -34,56 +34,56 @@ public class AdminController {
     return ResponseEntity.ok(adminService.dashboard());
   }
 
-  @PutMapping("/addPoints")
+  @PutMapping("/points")
   @Secured("ROLE_ADMIN")
   public ResponseEntity<ApiResponse<User>> addPoints(@RequestBody PointRequest request) {
     return ResponseEntity.ok(adminService.addPoints(request));
   }
 
-  @PutMapping("/resetPoints")
+  @PutMapping("/reset")
   @Secured("ROLE_ADMIN")
   public ResponseEntity<ApiResponse<User>> resetPoints(@RequestBody ResetPointRequest request) {
     return ResponseEntity.ok(adminService.resetPoints(request));
   }
 
-  @PostMapping("/addTrash")
+  @PostMapping("/trash")
   @Secured("ROLE_ADMIN")
   public ResponseEntity<ApiResponse<Trash>> addTrash(@RequestBody Trash trash) {
     return ResponseEntity.ok(adminService.addTrash(trash));
   }
 
-  @DeleteMapping("/deleteTrash/{trashId}")
+  @DeleteMapping("/trash/{trashId}")
   @Secured("ROLE_ADMIN")
   public ResponseEntity<ApiResponse<Void>> deleteTrash(@PathVariable String trashId) {
     return ResponseEntity.ok(adminService.deleteTrashById(trashId));
   }
 
-  @PutMapping("/editSampah/{trashId}")
+  @PutMapping("/trash/{trashId}")
   @Secured("ROLE_ADMIN")
   public ResponseEntity<ApiResponse<Trash>> editSampah(
       @PathVariable String trashId, @RequestBody Map<String, Object> updates) {
     return ResponseEntity.ok(adminService.updateTrashById(trashId, updates));
   }
 
-  @GetMapping("/getUsers")
+  @GetMapping("/users")
   @Secured("ROLE_ADMIN")
   public ResponseEntity<ApiResponse<List<User>>> getUsers() {
     return ResponseEntity.ok(adminService.getUsers());
   }
 
-  @PostMapping("/addBankSampah")
+  @PostMapping("/banksampah")
   @Secured("ROLE_ADMIN")
   public ResponseEntity<ApiResponse<BankSampah>> addBankSampah(@RequestBody BankSampah bankSampah) {
     return ResponseEntity.ok(adminService.addBankSampah(bankSampah));
   }
 
-  @DeleteMapping("/deleteBankSampah/{bankSampahId}")
+  @DeleteMapping("/banksampah/{bankSampahId}")
   @Secured("ROLE_ADMIN")
   public ResponseEntity<ApiResponse<Void>> deleteBankSampah(@PathVariable String bankSampahId) {
     return ResponseEntity.ok(adminService.deleteBankSampahById(bankSampahId));
   }
 
-  @PutMapping("/editBankSampah/{bankSampahId}")
+  @PutMapping("/banksampah/{bankSampahId}")
   @Secured("ROLE_ADMIN")
   public ResponseEntity<ApiResponse<BankSampah>> editBankSampah(
       @PathVariable String bankSampahId, @RequestBody Map<String, Object> updates) {
