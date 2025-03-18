@@ -35,19 +35,19 @@ public class UserController {
     return ResponseEntity.ok(userService.updateUserProfile(request));
   }
 
-  @GetMapping("/point")
+  @GetMapping("/points")
   @Secured("ROLE_USER")
   public ResponseEntity<ApiResponse<Double>> getPoin() {
     return ResponseEntity.ok(userService.getUserPoints());
   }
 
-  @GetMapping("/getBankSampah")
+  @GetMapping("/banksampah")
   @Secured("ROLE_USER")
   public ResponseEntity<ApiResponse<List<BankSampah>>> getBankSampah() {
     return ResponseEntity.ok(userService.getBankSampah());
   }
 
-  @DeleteMapping("/deleteAccount")
+  @DeleteMapping("/profile")
   @Secured("ROLE_USER")
   public ResponseEntity<ApiResponse<Void>> deleteAccount() {
     return ResponseEntity.ok(userService.deleteAccount());
