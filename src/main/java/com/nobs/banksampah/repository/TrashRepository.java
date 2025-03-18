@@ -1,9 +1,6 @@
 package com.nobs.banksampah.repository;
 
+import com.nobs.banksampah.model.Trash;
 import org.springframework.data.mongodb.repository.MongoRepository;
 
-import com.nobs.banksampah.model.Trash;
-
-public interface TrashRepository extends MongoRepository<Trash, String> {
-
-}
+public interface TrashRepository extends MongoRepository<Trash, String> {}

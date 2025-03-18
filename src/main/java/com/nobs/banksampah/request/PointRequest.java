@@ -3,8 +3,8 @@ package com.nobs.banksampah.request;
 import lombok.Data;
 
 @Data
-public class LoginRequest {
+public class PointRequest {
 
   private String username;
-  private String password;
+  private String trashId;
 }

@@ -1,24 +1,29 @@
 package com.nobs.banksampah.service;
 
-import java.util.Map;
-
-import org.springframework.security.core.userdetails.UserDetailsService;
-
+import com.nobs.banksampah.model.BankSampah;
 import com.nobs.banksampah.model.User;
+import com.nobs.banksampah.request.ProfileRequest;
+import com.nobs.banksampah.response.ApiResponse;
+import java.util.List;
+import org.springframework.security.core.userdetails.UserDetailsService;
 
 public interface UserService {
 
-    UserDetailsService userDetailsService();
+  UserDetailsService userDetailsService();
 
-    User updateUserPoints(String username, double poin);
+  ApiResponse<User> getProfile();
 
-    User resetUserPoints(String username);
+  ApiResponse<User> updateUserProfile(ProfileRequest request);
 
-    void deleteUserByUsername(String username);
+  ApiResponse<Double> getUserPoints();
 
-    User updateUserProfile(String username, Map<String, Object> updates);
+  ApiResponse<List<BankSampah>> getBankSampah();
 
-    User getUserByUsername(String username);
+  ApiResponse<Void> deleteAccount();
 
-    double getUserPoints(String username);
+  double getUserPoints(String username);
+
+  User updateUserPoints(String username, double poin);
+
+  User resetUserPoints(String username);
 }

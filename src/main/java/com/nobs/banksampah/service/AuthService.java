@@ -4,13 +4,14 @@ import com.nobs.banksampah.model.User;
 import com.nobs.banksampah.request.LoginRequest;
 import com.nobs.banksampah.request.RefreshTokenRequest;
 import com.nobs.banksampah.request.RegisterRequest;
+import com.nobs.banksampah.response.ApiResponse;
 import com.nobs.banksampah.response.JwtResponse;
 
 public interface AuthService {
 
-    User register(RegisterRequest registerRequest);
+  ApiResponse<User> register(RegisterRequest registerRequest);
 
-    JwtResponse login(LoginRequest loginRequest);
+  ApiResponse<JwtResponse> login(LoginRequest loginRequest);
 
-    JwtResponse refreshToken(RefreshTokenRequest refreshTokenRequest);
+  ApiResponse<JwtResponse> refreshToken(RefreshTokenRequest refreshTokenRequest);
 }
